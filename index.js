@@ -1,126 +1,3 @@
-// import express from "express";
-// import connectDB from "./config/dB.js";
-// import "dotenv/config";
-// import cors from "cors"
-// import cookieParser from "cookie-parser";
-
-// import { Server } from "socket.io";
-// import http from "http";
-
-
-
-// import multer from "multer";
-// import path from "path";
-
-
-// // router 
-
-// // import testRouter from "./routes/test-route.js";
-// import userRouter from "./routes/user-route.js";
-
-// // conversation router
-// import convoRouter from "./routes/conversation-route.js";
-
-// // message router 
-// import msgRouter from "./routes/message-route.js";
-
-
-// const app = express();
-
-
-// const server = http.createServer(app);
-
-
-// // port number 
-// const port = 8001;
-
-// // database connection calling
-// connectDB();
-
-
-// // json
-// app.use(express.json());
-
-// // cors
-// // app.use(cors());
-// app.use(cors({
-//     origin: "http://localhost:3000", // frontend origin
-//     credentials: true,               // allow cookies/auth headers
-// }));
-// app.use(cookieParser());
-
-// const io = new Server(server, {
-//   cors: {
-//     origin: "*", // change to frontend URL later
-//   },
-// });
-
-
-// io.on("connection", (socket) => {
-//   console.log("User connected:", socket.id);
-
-//   // join room for conversation
-//   socket.on("joinConversation", (conversationId) => {
-//     socket.join(conversationId);
-//     console.log(`User joined conversation: ${conversationId}`);
-//   });
-
-//   // send message
-//   socket.on("sendMessage", (data) => {
-//     const { conversationId, message } = data;
-
-//     // emit message to users in that conversation
-//     io.to(conversationId).emit("receiveMessage", message);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected:", socket.id);
-//   });
-// });
-
-
-
-
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, "uploads/"); // save in uploads folder
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, Date.now() + path.extname(file.originalname)); // unique name
-//     }
-// });
-
-// const upload = multer({ storage: storage });
-
-
-// app.post("/upload", upload.single("image"), (req, res) => {
-//     res.json({
-//         message: "Image uploaded successfully",
-//         // filePath: `http://localhost:5000/uploads/${req.file.filename}`
-//         filePath: `http://localhost:${port}/uploads/${req.file.filename}`
-//     });
-// });
-
-
-// app.use("/uploads", express.static("uploads"));
-
-
-
-
-
-// // app.use("/test", testRouter);
-// app.use("/api/user-auth", userRouter);
-// app.use("/api/conversations", convoRouter);
-// app.use("/api/messages", msgRouter);
-
-
-// app.listen(port, () => {
-//     console.log(`listening on port ${port}`)
-// })
-
-
-
-
 import express from "express";
 import connectDB from "./config/dB.js";
 import "dotenv/config";
@@ -149,12 +26,6 @@ connectDB();
 
 // Middlewares
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // frontend origin
-//     credentials: true, // allow cookies/auth headers
-//   })
-// );
 
 const allowedOrigin = [
   "http://localhost:3000",
@@ -176,14 +47,6 @@ app.use(
 
 app.use(cookieParser());
 
-// ================= SOCKET.IO =================
-// const io = new Server(server, {
-//   cors: {
-//     origin: "http://localhost:3000", // frontend
-//     methods: ["GET", "POST"],
-//   },
-// });
-
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -203,30 +66,6 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-
-
-// io.on("connection", (socket) => {
-//   console.log("🔌 User connected:", socket.id);
-
-//   // Join a conversation (room)
-//   socket.on("joinConversation", (conversationId) => {
-//     socket.join(conversationId);
-//     console.log(`✅ User joined conversation: ${conversationId}`);
-//   });
-
-//   // Send + broadcast message
-//   socket.on("sendMessage", (data) => {
-//     const { conversationId, message } = data;
-//     console.log("📨 Message sent:", data);
-
-//     // Send message to everyone in the room
-//     io.to(conversationId).emit("receiveMessage", message);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("❌ User disconnected:", socket.id);
-//   });
-// });
 
 
 
