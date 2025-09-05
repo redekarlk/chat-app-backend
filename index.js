@@ -149,12 +149,31 @@ connectDB();
 
 // Middlewares
 app.use(express.json());
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000", // frontend origin
+//     credentials: true, // allow cookies/auth headers
+//   })
+// );
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://chat-app-frontend.onrender.com"
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000", // frontend origin
-    credentials: true, // allow cookies/auth headers
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
+
 app.use(cookieParser());
 
 // ================= SOCKET.IO =================
