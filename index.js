@@ -158,7 +158,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://chat-app-frontend.onrender.com"
+  "https://chat-app-frontend-two-eta.vercel.app"
 ];
 
 app.use(
