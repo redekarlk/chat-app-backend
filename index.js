@@ -156,7 +156,7 @@ app.use(express.json());
 //   })
 // );
 
-const allowedOrigins = [
+const allowedOrigin = [
   "http://localhost:3000",
   "https://chat-app-frontend-two-eta.vercel.app"
 ];
@@ -164,7 +164,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigin.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -177,12 +177,33 @@ app.use(
 app.use(cookieParser());
 
 // ================= SOCKET.IO =================
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:3000", // frontend
+//     methods: ["GET", "POST"],
+//   },
+// });
+
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://chat-app-frontend-two-eta.vercel.app"
+];
+
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // frontend
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
+
 
 // io.on("connection", (socket) => {
 //   console.log("🔌 User connected:", socket.id);
