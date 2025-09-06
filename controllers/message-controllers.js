@@ -11,7 +11,7 @@ export const sendMsg = async (req, res) => {
 
         const message = await messageModel.create({
             // conversationId,
-             conversation: conversationId,
+            conversation: conversationId,
             sender: senderId,
             text,
         });
@@ -22,10 +22,10 @@ export const sendMsg = async (req, res) => {
             updatedAt: new Date()
         });
 
-        res.json(message);
+        res.json({ success: true, message });
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: err.message });
+        // console.log(err)
+        res.json({ success: false, message: err.message });
     }
 };
 
@@ -37,8 +37,8 @@ export const getMsgOfConvo = async (req, res) => {
         }).populate("sender", "name email");
 
         // console.log("called")
-        res.json({success: true,messages});
+        res.json({ success: true, messages });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.json({ success: false, message: err.message });
     }
 };

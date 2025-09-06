@@ -208,33 +208,6 @@ export const userDataForOther = async (req, res) => {
 
 
 
-// export const followRequest = async (req, res) => {
-//     try {
-//         const { userId: senderId } = req.body;      // logged in user
-//         const { id: receiverId } = req.params;  // target user
-
-//         if (senderId === receiverId) {
-//             return res.json({ message: "You cannot follow yourself" });
-//         }
-
-//         const receiver = await userModel.findById(receiverId);
-
-//         if (!receiver) return res.json({ message: "User not found" });
-
-//         if (receiver.followRequests.includes(senderId)) {
-//             return res.json({ message: "Request already sent" });
-//         }
-
-//         receiver.followRequests.push(senderId);
-//         await receiver.save();
-
-//         res.json({ message: "Follow request sent" });
-//     } catch (error) {
-//         return res.json({ success: false, message: error.message });
-//     }
-// }
-
-
 export const followRequest = async (req, res) => {
   try {
     const { userId: senderId } = req.body; // logged-in user
@@ -289,7 +262,7 @@ export const acceptRequest = async (req, res) => {
         // const requesterId = req.params.id;
 
         if (!currentUser.followRequests.includes(requesterId)) {
-            return res.status(400).json({ message: "No such follow request" });
+            return res.json({ message: "No such follow request" });
         }
 
         // Remove from followRequests
@@ -326,7 +299,7 @@ export const rejectRequest = async (req, res) => {
         // const requesterId = req.params.id;
 
         if (!currentUser.followRequests.includes(requesterId)) {
-            return res.status(400).json({ message: "No such follow request" });
+            return res.json({ message: "No such follow request" });
         }
 
         // Remove request
@@ -351,7 +324,7 @@ export const searchUsers = async (req, res) => {
     console.log("request is commming...!")
 
     if (!query) {
-      return res.status(400).json({ message: "Query parameter is required" });
+      return res.json({ message: "Query parameter is required" });
     }
 
     // search in name or email (case-insensitive)
@@ -364,7 +337,7 @@ export const searchUsers = async (req, res) => {
 
     res.json(users);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -372,7 +345,7 @@ export const searchUsers = async (req, res) => {
 
 
 
-// ✅ Get all follow requests
+// Get all follow requests
 export const getFollowRequests = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -383,11 +356,11 @@ export const getFollowRequests = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.json({ success: false, message: "User not found" });
     }
 
     res.json({ success: true, requests: user.followRequests });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.json({ success: false, message: err.message });
   }
 };

@@ -23,9 +23,9 @@ export const createConvo = async (req, res) => {
             });
         }
 
-        res.json({success: true, conversation});
+        res.json({ success: true, conversation });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.json({ success: false, message: err.message });
     }
 
 }
@@ -43,8 +43,8 @@ export const getAllConvo = async (req, res) => {
             .populate("lastMessage")
             .sort({ updatedAt: -1 });
 
-        res.json(conversations);
+        res.json({ success: true, conversations });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.json({ success: false, message: err.message });
     }
 }

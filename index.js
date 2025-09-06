@@ -69,14 +69,12 @@ const io = new Server(server, {
 
 
 
-
-
 io.on("connection", (socket) => {
-  console.log("🔌 User connected:", socket.id);
+  console.log("User connected:", socket.id);
 
   socket.on("joinConversation", (conversationId) => {
     socket.join(conversationId);
-    console.log(`✅ User joined conversation: ${conversationId}`);
+    console.log(`User joined conversation: ${conversationId}`);
   });
 
   socket.on("markSeen", async ({ conversationId, userId }) => {
@@ -89,7 +87,7 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", async (data) => {
     const { conversationId, sender, text } = data;
-    console.log("📨 Message sent:", data);
+    console.log("Message sent:", data);
 
     try {
       // 1. Save message to DB
@@ -111,37 +109,18 @@ io.on("connection", (socket) => {
       // 4. Emit to everyone in the room
       io.to(conversationId).emit("receiveMessage", populatedMsg);
     } catch (err) {
-      console.error("❌ Error saving message:", err.message);
+      console.error("Error saving message:", err.message);
     }
   });
 
   socket.on("disconnect", () => {
-    console.log("❌ User disconnected:", socket.id);
+    console.log(" User disconnected:", socket.id);
   });
 });
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ================= MULTER (Image Upload) =================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/"); // save in uploads folder
@@ -161,28 +140,14 @@ app.post("/upload", upload.single("image"), (req, res) => {
 
 app.use("/uploads", express.static("uploads"));
 
-// ================= ROUTES =================
 app.use("/api/user-auth", userRouter);
 app.use("/api/conversations", convoRouter);
 app.use("/api/messages", msgRouter);
 
-// ================= START SERVER =================
+
+
+
 server.listen(port, () => {
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
