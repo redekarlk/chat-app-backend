@@ -30,9 +30,12 @@ export const createConvo = async (req, res) => {
 
 }
 
+
 export const getAllConvo = async (req, res) => {
 
     const { userId: participants } = req.body;
+
+    // console.log("convo called!!")
 
 
     try {
