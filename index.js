@@ -16,6 +16,7 @@ import messageModel from "./models/message-model.js";
 import convoModel from "./models/conversation-model.js";
 
 const app = express();
+app.set("trust proxy", 1);
 const server = http.createServer(app);
 
 // Port number
@@ -27,15 +28,16 @@ connectDB();
 // Middlewares
 app.use(express.json());
 
-const allowedOrigin = [
+const allowedOrigins = [
   "http://localhost:3000",
   "https://chat-app-frontend-two-eta.vercel.app"
 ];
 
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigin.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -48,10 +50,6 @@ app.use(
 app.use(cookieParser());
 
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://chat-app-frontend-two-eta.vercel.app"
-];
 
 const io = new Server(server, {
   cors: {
